@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es" style="background-color: #030407;">
+<html lang="es" style="background-color: #030407 !important;">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -17,7 +17,7 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
         
-        /* Forzar fondo oscuro absoluto desde el arranque para fundirse con la app */
+        /* Forzar fondo oscuro absoluto en toda la raíz */
         html, body { 
             background-color: #030407 !important; 
             color: #ffffff; 
@@ -26,9 +26,9 @@
             padding: 0;
         }
 
-        /* Ocultar fondo blanco y elementos nativos de carga de AppCreator24 */
-        .app-content, body > div:not(#splash-screen) {
-            display: none !important;
+        /* Ocultar cualquier contenedor inyectado por AppCreator24 que cause destellos blancos */
+        body > div:not(#splash-screen), .app-content, iframe, .windowView, .app-loading {
+            background-color: #030407 !important;
         }
         
         .no-scrollbar::-webkit-scrollbar { display: none; }
@@ -58,8 +58,20 @@
         }
         .arriving-pulse { animation: pulse-arriving 1.5s infinite; }
     </style>
+    <script>
+        // Script preventivo para pintar de negro el fondo del contenedor padre apenas cargue el DOM
+        document.addEventListener("DOMContentLoaded", () => {
+            document.documentElement.style.backgroundColor = "#030407";
+            document.body.style.backgroundColor = "#030407";
+            if(window.parent && window.parent.document) {
+                try {
+                    window.parent.document.body.style.backgroundColor = "#030407";
+                } catch(e) {}
+            }
+        });
+    </script>
 </head>
-<body class="flex flex-col h-screen overflow-hidden">
+<body class="flex flex-col h-screen overflow-hidden" style="background-color: #030407 !important;">
 
     <!-- PANTALLA DE CARGA (SPLASH SCREEN) - Sincronizada con el fondo de la app -->
     <div id="splash-screen" style="background-color: #030407 !important;" class="fixed inset-0 z-50 flex flex-col items-center justify-center transition-all duration-700">
@@ -333,14 +345,6 @@
     <!-- SCRIPT DE CONTROL -->
     <script>
         window.addEventListener('load', () => {
-            // Mostrar contenido principal
-            document.querySelectorAll('.app-content, body > div:not(#splash-screen)').forEach(el => {
-                if(el.id !== 'splash-screen') {
-                    el.style.display = 'block'; // O el display que corresponda, flex etc.
-                    el.style.setProperty('display', '', 'important'); 
-                }
-            });
-
             // Se mantiene exactamente 5 segundos visibles mostrando tu animación y luego se desvanece
             setTimeout(() => {
                 const splash = document.getElementById('splash-screen');
