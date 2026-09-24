@@ -25,6 +25,11 @@
             margin: 0;
             padding: 0;
         }
+
+        /* Ocultar fondo blanco y elementos nativos de carga de AppCreator24 */
+        .app-content, body > div:not(#splash-screen) {
+            display: none !important;
+        }
         
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
@@ -328,6 +333,14 @@
     <!-- SCRIPT DE CONTROL -->
     <script>
         window.addEventListener('load', () => {
+            // Mostrar contenido principal
+            document.querySelectorAll('.app-content, body > div:not(#splash-screen)').forEach(el => {
+                if(el.id !== 'splash-screen') {
+                    el.style.display = 'block'; // O el display que corresponda, flex etc.
+                    el.style.setProperty('display', '', 'important'); 
+                }
+            });
+
             // Se mantiene exactamente 5 segundos visibles mostrando tu animación y luego se desvanece
             setTimeout(() => {
                 const splash = document.getElementById('splash-screen');
