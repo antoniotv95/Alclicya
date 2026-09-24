@@ -26,7 +26,6 @@
             padding: 0;
         }
 
-        /* Ocultar cualquier contenedor inyectado por AppCreator24 que cause destellos blancos */
         body > div:not(#splash-screen), .app-content, iframe, .windowView, .app-loading {
             background-color: #030407 !important;
         }
@@ -59,27 +58,25 @@
         .arriving-pulse { animation: pulse-arriving 1.5s infinite; }
     </style>
     <script>
-        // Script preventivo para pintar de negro el fondo del contenedor padre apenas cargue el DOM
         document.addEventListener("DOMContentLoaded", () => {
             document.documentElement.style.backgroundColor = "#030407";
             document.body.style.backgroundColor = "#030407";
             if(window.parent && window.parent.document) {
-                try {
-                    window.parent.document.body.style.backgroundColor = "#030407";
-                } catch(e) {}
+                try { window.parent.document.body.style.backgroundColor = "#030407"; } catch(e) {}
             }
         });
     </script>
 </head>
 <body class="flex flex-col h-screen overflow-hidden" style="background-color: #030407 !important;">
 
-    <!-- PANTALLA DE CARGA (SPLASH SCREEN) - Sincronizada con el fondo de la app -->
+    <!-- PANTALLA DE CARGA (SPLASH SCREEN) - Sincronizada idéntica al icono inicial -->
     <div id="splash-screen" style="background-color: #030407 !important;" class="fixed inset-0 z-50 flex flex-col items-center justify-center transition-all duration-700">
         <div class="text-center space-y-6 logo-container-glow">
+            <!-- Aquí puedes cambiar el contenido si prefieres poner una etiqueta <img> con la URL directa de tu logo oficial -->
             <div class="relative w-28 h-28 mx-auto flex items-center justify-center bg-gradient-to-tr from-amber-500/20 to-sky-500/20 rounded-3xl border border-white/10 shadow-2xl overflow-hidden">
                 <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-[speedLine_1.5s_infinite]"></div>
                 <div class="relative flex flex-col items-center">
-                    <i class="fa-solid fa-location-arrow text-sky-400 text-3xl animate-bounce"></i>
+                    <i class="fa-solid fa-location-arrow text-sky-400 text-3xl"></i>
                     <i class="fa-solid fa-box text-amber-400 text-sm mt-1"></i>
                 </div>
             </div>
@@ -345,7 +342,6 @@
     <!-- SCRIPT DE CONTROL -->
     <script>
         window.addEventListener('load', () => {
-            // Se mantiene exactamente 5 segundos visibles mostrando tu animación y luego se desvanece
             setTimeout(() => {
                 const splash = document.getElementById('splash-screen');
                 if (splash) {
@@ -627,6 +623,7 @@
             const data = snapshot.val();
             if(!data) { container.innerHTML = '<p class="text-xs text-zinc-500">Sin pedidos.</p>'; return; }
             let html = '';
+            Object.keys(data).keys().forEach(k => {}); // placeholder
             Object.keys(data).forEach(k => {
                 const o = data[k];
                 if(o.userId === userId) {
